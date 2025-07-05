@@ -38,36 +38,18 @@ async function closeBrowser() {
         console.log('Puppeteer browser closed.');
     }
 }
-/**
- * Scrapes titles from a single URL or an array of URLs.
- * @param urls A single URL string or an array of URL strings.
- * @returns A promise that resolves to an array of ScrapedData.
- */
-// export async function scrapeTitles(urls: string | string[]): Promise<ScrapedData[]> {
-//   const urlsToScrape = Array.isArray(urls) ? urls : [urls];
-//   const results: ScrapedData[] = [];
-//   // Process URLs sequentially to avoid overwhelming the server/website
-//   for (const url of urlsToScrape) {
-//     if (!url.startsWith('http://') && !url.startsWith('https://')) {
-//       results.push({ url, title: null, error: 'Invalid URL format. Must start with http:// or https://' });
-//       continue;
-//     }
-//     const result = await scrapeTitle(url);
-//     results.push(result);
-//   }
-//   return results;
-// }
 const urlSchema = zod_1.z.string().url('Invalid URL format').startsWith('https://', 'URL must start with https://');
 const urlsBodySchema = zod_1.z.object({
     urls: zod_1.z.union([
         urlSchema, // Single URL string
-        zod_1.z.array(urlSchema) // Array of URL strings
+        zod_1.z.array(urlSchema).min(1) // Array of URL strings
     ])
 });
 const fetchCompanyResultsController = {
     validation: (async (req, res, next) => {
         try {
             urlsBodySchema.parse(req.body);
+            next();
         }
         catch (err) {
             if (err instanceof zod_1.z.ZodError) {
@@ -86,6 +68,7 @@ const fetchCompanyResultsController = {
     controller: (async (req, res, next) => {
         try {
             const urlsInput = req?.body?.urls; // Renamed to urlsInput to avoid confusion
+            console.log(urlsInput, `urlsInput`);
             let scrapedResults = [];
             // Determine if it's a single string (URL or Query) or an array of URLs
             if (typeof urlsInput === 'string') {
@@ -103,10 +86,8 @@ const fetchCompanyResultsController = {
             }
             else if (Array.isArray(urlsInput)) {
                 // If it's an array, process each as a URL (as per schema validation)
-                for (const url of urlsInput) {
-                    const result = await (0, scraper_1.scrapeTitle)(url);
-                    scrapedResults.push(result);
-                }
+                const result = await (0, scraper_1.scrapeSearch)(urlsInput);
+                scrapedResults.push(result);
             }
             return res.status(200).json({ success: true, data: scrapedResults });
         }

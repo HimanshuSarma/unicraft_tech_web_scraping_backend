@@ -88,43 +88,56 @@ async function scrapeSearch(query) {
         return { query, results: [], error: 'Browser not initialized.' };
     let page = null;
     try {
-        page = await browserInstance.newPage();
-        await preparePageForScraping(page);
-        const encodedQuery = encodeURIComponent(query);
-        const searchUrl = `https://html.duckduckgo.com/html/?q=${encodedQuery}`;
-        console.log(`Searching for: ${query} (${searchUrl})`);
-        const response = await page.goto(searchUrl, { waitUntil: 'networkidle2', timeout: 45000 });
-        const isCaptchaPage = await page.evaluate(() => {
-            const captchaForm = document.querySelector('#captcha-form');
-            const blockingMessage = document.body.textContent?.includes('Our systems have detected unusual traffic');
-            const consentButton = document.querySelector('form[action*="/consent"] button');
-            return captchaForm !== null || blockingMessage || consentButton !== null;
-        });
-        if (isCaptchaPage) {
-            return {
-                query,
-                results: [],
-                error: 'Blocked by CAPTCHA or consent page.'
-            };
-        }
-        await page.waitForSelector('.result', { timeout: 10000 });
-        const searchResults = await page.evaluate(() => {
-            const results = [];
-            const items = document.querySelectorAll('.result');
-            items.forEach(item => {
-                const titleElement = item.querySelector('.result__a');
-                const snippetElement = item.querySelector('.result__snippet');
-                if (titleElement?.textContent && titleElement.href) {
-                    results.push({
-                        title: titleElement.textContent.trim(),
-                        link: titleElement.href,
-                        snippet: snippetElement?.textContent?.trim() || null
-                    });
-                }
+        let searchResults = [];
+        if (typeof query === "string") {
+            page = await browserInstance.newPage();
+            await preparePageForScraping(page);
+            const encodedQuery = encodeURIComponent(query);
+            const searchUrl = `https://html.duckduckgo.com/html/?q=${encodedQuery}`;
+            console.log(`Searching for: ${query} (${searchUrl})`);
+            const response = await page.goto(searchUrl, { waitUntil: 'networkidle2', timeout: 45000 });
+            const isCaptchaPage = await page.evaluate(() => {
+                const captchaForm = document.querySelector('#captcha-form');
+                const blockingMessage = document.body.textContent?.includes('Our systems have detected unusual traffic');
+                const consentButton = document.querySelector('form[action*="/consent"] button');
+                return captchaForm !== null || blockingMessage || consentButton !== null;
             });
-            return results;
-        });
-        const firstFewResults = searchResults.slice(1, 4);
+            if (isCaptchaPage) {
+                return {
+                    query,
+                    results: [],
+                    error: 'Blocked by CAPTCHA or consent page.'
+                };
+            }
+            await page.waitForSelector('.result', { timeout: 10000 });
+            searchResults = await page.evaluate(() => {
+                const results = [];
+                const items = document.querySelectorAll('.result');
+                items.forEach(item => {
+                    const titleElement = item.querySelector('.result__a');
+                    const snippetElement = item.querySelector('.result__snippet');
+                    if (titleElement?.textContent && titleElement.href) {
+                        results.push({
+                            title: titleElement.textContent.trim(),
+                            link: titleElement.href,
+                            snippet: snippetElement?.textContent?.trim() || null
+                        });
+                    }
+                });
+                return results;
+            });
+        }
+        else {
+            searchResults = query?.map?.(url => {
+                return {
+                    title: "",
+                    link: url,
+                    snippet: null
+                };
+            });
+        }
+        console.log(searchResults, `searchResults`);
+        const firstFewResults = searchResults.slice(0, 4);
         const results = [];
         try {
             for (const result of firstFewResults) {
@@ -146,6 +159,7 @@ async function scrapeSearch(query) {
     }
 }
 async function parseDocumentFromLink(url) {
+    console.log(`parseDocumentFromLink`, url);
     if (!browserInstance)
         throw new Error("Browser not initialized.");
     const page = await browserInstance.newPage();

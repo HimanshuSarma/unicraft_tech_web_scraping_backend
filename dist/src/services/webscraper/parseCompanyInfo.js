@@ -22,11 +22,19 @@ function extractTechStackFromText(text) {
 }
 // Extract emails and phone numbers from text
 function extractContactInfoFromText(text) {
-    const phoneRegex = /(\+?\d{1,3}[\s-]?)?\(?\d{2,4}\)?[\s-]?\d{3,4}[\s-]?\d{3,4}/g;
-    const emailRegex = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-z]{2,}/g;
-    const phones = Array.from(new Set(text.match(phoneRegex) || []));
-    const emails = Array.from(new Set(text.match(emailRegex) || []));
-    return { phones, emails };
+    const phoneRegex = /(\+?\d{1,3}[\s.-]?)?\(?\d{2,4}\)?[\s.-]?\d{3,4}[\s.-]?\d{3,4}/g;
+    const emailRegex = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g;
+    const websiteRegex = /https?:\/\/(?:www\.)?[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}(\/\S*)?/g;
+    // Normalize common obfuscations in emails
+    const normalizedText = text
+        .replace(/\s*\(at\)\s*/gi, '@')
+        .replace(/\s*\[at\]\s*/gi, '@')
+        .replace(/\s*\(dot\)\s*/gi, '.')
+        .replace(/\s*\[dot\]\s*/gi, '.');
+    const phones = Array.from(new Set(normalizedText.match(phoneRegex) || []));
+    const emails = Array.from(new Set(normalizedText.match(emailRegex) || []));
+    const websites = Array.from(new Set(normalizedText.match(websiteRegex) || []));
+    return { phones, emails, websites };
 }
 // Main function to extract company details
 function extractCompanyDetails(rawText, companies) {
