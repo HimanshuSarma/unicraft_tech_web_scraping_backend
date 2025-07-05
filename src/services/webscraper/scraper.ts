@@ -194,52 +194,6 @@ export async function parseDocumentFromLink(url: string): Promise<any> {
     const cleanedText = cleanText(pageText);
 
     return extractEntitiesFromText(cleanedText);
- 
-    // const aiCompanyNames = await extractEntitiesFromText(
-    //   cleanedText
-    // );
-    
-    // const aiEmails = pageText.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-z]{2,}/g) || [];
-    // const aiPhones = pageText.match(/(\+?\d{1,3})?[\s.-]?\(?\d{2,4}\)?[\s.-]?\d{3,4}[\s.-]?\d{3,4}/g) || [];
-
-    // // console.log(aiCompanyNames, pageText, `aiCompanyNames`)
-
-    // const companyDetails = await page.evaluate(() => {
-    //   const getEmails = () => {
-    //     const emailRegex = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-z]{2,}/g;
-    //     return Array.from(document.body.innerText.matchAll(emailRegex)).map(m => m[0]);
-    //   };
-
-    //   const getPhones = () => {
-    //     const phoneRegex = /(\+?\d{1,3})?[\s.-]?\(?\d{2,4}\)?[\s.-]?\d{3,4}[\s.-]?\d{3,4}/g;
-    //     return Array.from(document.body.innerText.matchAll(phoneRegex)).map(m => m[0]);
-    //   };
-
-    //   const getLinks = () => {
-    //     return Array.from(document.querySelectorAll('a'))
-    //       .filter(link => {
-    //         const text = link.textContent?.toLowerCase() || '';
-    //         return text.includes('contact') || text.includes('about') || text.includes('team');
-    //       })
-    //       .map(link => ({ text: link.textContent?.trim(), href: link.href }));
-    //   };
-
-    //   return {
-    //     emails: getEmails(),
-    //     phones: getPhones(),
-    //     contactLinks: getLinks(),
-    //     pageTitle: document.title,
-    //   };
-    // });
-
-    // return {
-    //   url: targetUrl,
-    //   companyNames: aiCompanyNames,
-    //   emails: [...new Set([...companyDetails.emails, ...aiEmails])],
-    //   phones: [...new Set([...companyDetails.phones, ...aiPhones])],
-    //   contactLinks: companyDetails.contactLinks,
-    //   pageTitle: companyDetails.pageTitle
-    // };
   } catch (err: any) {
     return { url, error: err.message };
   } finally {
