@@ -7,7 +7,7 @@ exports.fetchCompanyResultsController = void 0;
 exports.initializeBrowser = initializeBrowser;
 exports.closeBrowser = closeBrowser;
 const zod_1 = require("zod"); // Import Zod
-const puppeteer_1 = __importDefault(require("puppeteer"));
+const puppeteer_extra_1 = __importDefault(require("puppeteer-extra"));
 const scraper_1 = require("../../services/webscraper/scraper");
 // Global browser instance to reuse for performance.
 // Initialize it when the server starts.
@@ -19,7 +19,7 @@ let browserInstance = null;
 async function initializeBrowser() {
     if (!browserInstance) {
         console.log('Launching Puppeteer browser...');
-        browserInstance = await puppeteer_1.default.launch({
+        browserInstance = await puppeteer_extra_1.default.launch({
             headless: true, // Use 'new' for new headless, true for old headless
             args: ['--no-sandbox', '--disable-setuid-sandbox']
         });

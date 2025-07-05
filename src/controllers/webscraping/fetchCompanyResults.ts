@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction, RequestHandler } from 'express';
 import { z } from 'zod'; // Import Zod
-import puppeteer, { Browser, Page } from 'puppeteer';
+import { Browser, Page } from 'puppeteer';
+import puppeteer from 'puppeteer-extra';
 import { IFetchCompanyResultsRequestBody } from '../../types/requestTypes';
 import { scrapeSearch, scrapeTitle } from '../../services/webscraper/scraper';
 
