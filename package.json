@@ -11,7 +11,7 @@
     "test:coverage": "jest --coverage",
     "start": "concurrently \"tsc --watch\" \"nodemon dist/src/index.js\"",
     "prod": "tsc && nodemon dist/src/index.js",
-    "dev": "nodemon --watch 'src/**/*.ts' --exec 'tsc && node dist/src/index.js'",
+    "dev": "node dist/src/index.js",
     "watch": "tsc --watch"
   },
   "keywords": [],

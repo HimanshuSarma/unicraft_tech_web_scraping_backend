@@ -4,8 +4,10 @@ https://docs.google.com/document/d/1UGtH7vResTvmk5jFErHq9yJZJQSjNrUuiC1cHXNnNRE/
 
 
 Features:
-  1. Implemented the endpoint http://13.219.81.141:8000/getCompanyDetails (POST)
-  2. The body of the endpoint is as follows:
+  *. Clone the github repo: https://github.com/HimanshuSarma/unicraft_tech_web_scraping_backend.git on your machine
+  *. Run "npm run dev" to run the server. You must have nodejs installed on your machine.
+  *. Implemented the endpoint http://localhost:8000/getCompanyDetails (POST)
+  *. The body of the endpoint is as follows:
     {
       urls: "top 10 cloud companies in the word" (A custom string query)
     } 
@@ -13,11 +15,11 @@ Features:
     {
       urls:  ["https://clutch.co/us/web-developers"] (An array of urls)
     } 
-  3. The response will be an array containing the company details found in each website
-  4. I used @xenova/transformers(to parse company details found in each page). The results right now
+  *. The response will be an array containing the company details found in each website
+  *. I used @xenova/transformers(to parse company details found in each page). The results right now
     are not very accurate and I would need some more time to extract the company details more accurately.
     But, I think the results are good enough.
-  5. The endpoint is returning company details like company name, tech stack, contact info, websites etc.
-  6. I also implemented rate limiting with a redis instance so avoid overwhelming the server from the same client.
-  7. I also implemented some random delay between subsequent page scrapes.
-  8. Hit this endpoint(http://13.219.81.141:8000/getCompanyDetails (POST)) with a query like: "top 10 cloud companies in the word"  
+  *. The endpoint is returning company details like company name, tech stack, contact info, websites etc.
+  *. I also implemented rate limiting with a redis instance so avoid overwhelming the server from the same client.
+  *. I also implemented some random delay between subsequent page scrapes.
+  *. Hit this endpoint(http://localhost:8000/getCompanyDetails (POST)) with a query like: "top 10 cloud companies in the word"  
