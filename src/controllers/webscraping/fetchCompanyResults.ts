@@ -57,7 +57,7 @@ const urlSchema = z.string().url('Invalid URL format').startsWith('https://', 'U
 
 const urlsBodySchema = z.object({
   urls: z.union([
-    urlSchema, // Single URL string
+    z.string(), // Single URL string
     z.array(urlSchema).min(1) // Array of URL strings
   ])
 });

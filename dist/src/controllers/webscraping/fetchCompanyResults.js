@@ -43,7 +43,7 @@ async function closeBrowser() {
 const urlSchema = zod_1.z.string().url('Invalid URL format').startsWith('https://', 'URL must start with https://');
 const urlsBodySchema = zod_1.z.object({
     urls: zod_1.z.union([
-        urlSchema, // Single URL string
+        zod_1.z.string(), // Single URL string
         zod_1.z.array(urlSchema).min(1) // Array of URL strings
     ])
 });
