@@ -44,7 +44,7 @@ const routes_1 = require("./routes");
 const scraper_1 = require("./services/webscraper/scraper");
 const connectRedis_1 = require("./services/redis/connectRedis");
 const app = (0, express_1.default)();
-const PORT = 8000;
+const PORT = process.env.PORT || 8000;
 app.use((0, cors_1.default)({
     origin: "*"
 }));
