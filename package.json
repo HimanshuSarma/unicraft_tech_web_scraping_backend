@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "postinstall": "puppeteer install",
     "test": "jest --clearCache && jest --watchAll",
     "test:ci": "jest --clearCache && jest",
     "test:watch": "jest --watch",

@@ -24,6 +24,7 @@ async function initializeBrowser() {
             args: ['--no-sandbox', '--disable-setuid-sandbox'],
             executablePath: puppeteer_extra_1.default.executablePath(), // Optional: logs current path
         });
+        console.log("Using Puppeteer executable path:", puppeteer_extra_1.default.executablePath());
         console.log('Puppeteer browser launched.');
     }
 }

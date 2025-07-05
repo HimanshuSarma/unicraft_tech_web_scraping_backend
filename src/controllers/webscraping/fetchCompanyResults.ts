@@ -35,6 +35,7 @@ export async function initializeBrowser(): Promise<void> {
       args: ['--no-sandbox', '--disable-setuid-sandbox'],
       executablePath: puppeteer.executablePath(), // Optional: logs current path
     });
+    console.log("Using Puppeteer executable path:", puppeteer.executablePath());
     console.log('Puppeteer browser launched.');
   }
 }
