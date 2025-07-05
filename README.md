@@ -1,0 +1,22 @@
+https://docs.google.com/forms/u/0/d/e/1FAIpQLSdlGK5TemqKwR-bWE5TTNqkUBvlMpBFx-t-RsnrWONQbHpM1g/formResponse
+
+https://docs.google.com/document/d/1UGtH7vResTvmk5jFErHq9yJZJQSjNrUuiC1cHXNnNRE/edit?tab=t.0
+
+
+Features:
+  1. Implemented the endpoint http://13.219.81.141:8000/getCompanyDetails (POST)
+  2. The body of the endpoint is as follows:
+    {
+      urls: "top 10 cloud companies in the word" (A custom string query)
+    } 
+    OR
+    {
+      urls:  ["https://clutch.co/us/web-developers"] (An array of urls)
+    } 
+  3. The response will be an array containing the company details found in each website
+  4. I used @xenova/transformers(to parse company details found in each page). The results right now
+    are not very accurate and I would need some more time to extract the company details more accurately.
+    But, I think the results are good enough.
+  5. I also implemented rate limiting with a redis instance so avoid overwhelming the server from the same client.
+  6. I also implemented some random delay between subsequent page scrapes.
+  7. Hit this endpoint(http://13.219.81.141:8000/getCompanyDetails (POST)) with a query like: "top 10 cloud companies in the word"  
