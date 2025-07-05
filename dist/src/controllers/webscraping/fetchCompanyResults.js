@@ -21,7 +21,8 @@ async function initializeBrowser() {
         console.log('Launching Puppeteer browser...');
         browserInstance = await puppeteer_extra_1.default.launch({
             headless: true, // Use 'new' for new headless, true for old headless
-            args: ['--no-sandbox', '--disable-setuid-sandbox']
+            args: ['--no-sandbox', '--disable-setuid-sandbox'],
+            executablePath: puppeteer_extra_1.default.executablePath(), // Optional: logs current path
         });
         console.log('Puppeteer browser launched.');
     }
