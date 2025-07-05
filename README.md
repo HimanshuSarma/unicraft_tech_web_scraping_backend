@@ -17,6 +17,7 @@ Features:
   4. I used @xenova/transformers(to parse company details found in each page). The results right now
     are not very accurate and I would need some more time to extract the company details more accurately.
     But, I think the results are good enough.
-  5. I also implemented rate limiting with a redis instance so avoid overwhelming the server from the same client.
-  6. I also implemented some random delay between subsequent page scrapes.
-  7. Hit this endpoint(http://13.219.81.141:8000/getCompanyDetails (POST)) with a query like: "top 10 cloud companies in the word"  
+  5. The endpoint is returning company details like company name, tech stack, contact info, websites etc.
+  6. I also implemented rate limiting with a redis instance so avoid overwhelming the server from the same client.
+  7. I also implemented some random delay between subsequent page scrapes.
+  8. Hit this endpoint(http://13.219.81.141:8000/getCompanyDetails (POST)) with a query like: "top 10 cloud companies in the word"  
